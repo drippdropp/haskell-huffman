@@ -1,11 +1,8 @@
 module Huffman.Types where
 
-type Freq = Int
-data Entropy = Entropy { eValue :: Double } deriving (Show, Ord, Eq)
-
 data HNode = HNode { nodeValue :: Int
-                   , frequency :: Freq
-                   , entropy   :: Entropy
+                   , frequency :: Int
+                   , entropy   :: Float
                    } deriving (Show)
 
 instance Eq HNode where
@@ -20,5 +17,5 @@ data Tree a = Node a (Tree a) (Tree a)
             deriving (Show, Eq)
 
 -- mkHNode -- Makes a new HNode data object.
-mkHNode :: (Int, Int) -> Entropy -> HNode
-mkHNode (nv, freq) = HNode nv freq
+mkHNode :: (Int, Int, Float) -> HNode
+mkHNode (a, b, c) = HNode a b c

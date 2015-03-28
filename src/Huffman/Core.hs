@@ -1,5 +1,10 @@
 module Huffman.Core where
 
+import Data.Char (ord, chr)
+import Data.Function (on)
+import Huffman.Types
+import Sort.QSort
+
 -- This is for testing, will accept command line input in final version
 secretMessage :: String
 secretMessage = "this is a secret message we need to encode"
@@ -22,13 +27,15 @@ convertedInput :: [(Int, Int)]
 convertedInput = chunkLengths $ qsort secretMessage
 
 -- Function to iterate through processed data and package in HNode
-                 -- data objects.
-buildHNodes :: [(Int, Int)] -> ( (Int, Int) -> HNode ) -> [HNode]
-buildHNodes xs = map (\(x, y) -> (mkHNode ) x y) xs
+-- data objects.
+buildHNodes :: [(Int, Int)] -> Int -> [HNode]
+buildHNodes txs len = map (\x -> HNode (fst x) (snd x) (calcEntropy (snd x) len)) txs
 
--- Not sure if this is even necessary, maybe approach this differently.
-calcEntropy :: Int -> Int -> Entropy
-calcEntropy freq msgLen = read (show freq / show msgLen) :: Entropy
+calcEntropy :: Int -> Int -> Float
+calcEntropy = divideToFloat
+
+divideToFloat :: Int -> Int -> Float
+divideToFloat = (/) `on` fromIntegral
 
 -- buildSingletonTree :: (Int, Int) ->
 buildSingletonTree = undefined
