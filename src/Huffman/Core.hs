@@ -1,6 +1,6 @@
 module Huffman.Core where
 
-import Data.Char (ord, chr)
+import Data.Char (ord)
 import Data.Function (on)
 import Huffman.Types
 import Sort.QSort
@@ -14,7 +14,7 @@ messageLength :: [a] -> Int
 messageLength = length
 
 -- Prepare input for processing
-chunkLengths :: [Char] -> [(Int, Int)]
+chunkLengths :: String -> [(Int, Int)]
 chunkLengths [] = []
 chunkLengths (x:xs) = (charValue, cursorLength) :
                       chunkLengths (drop (cursorLength-1) xs)
@@ -29,13 +29,14 @@ convertedInput = chunkLengths $ qsort secretMessage
 -- Function to iterate through processed data and package in HNode
 -- data objects.
 buildHNodes :: [(Int, Int)] -> Int -> [HNode]
-buildHNodes txs len = map (\x -> HNode (fst x) (snd x) (calcEntropy (snd x) len)) txs
+buildHNodes txs len =
+  map (\x -> mkHNode $ prepForHNode x len) txs
+
+prepForHNode :: (Int, Int) -> Int -> (Int, Int, Float)
+prepForHNode tpl len = (fst tpl, snd tpl, calcEntropy (snd tpl) len)
 
 calcEntropy :: Int -> Int -> Float
 calcEntropy = divideToFloat
 
 divideToFloat :: Int -> Int -> Float
 divideToFloat = (/) `on` fromIntegral
-
--- buildSingletonTree :: (Int, Int) ->
-buildSingletonTree = undefined
