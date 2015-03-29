@@ -1,10 +1,10 @@
 module Main where
 
-import Sort.QSort (qsort)
+import Sort.QSort
 import Huffman.Core
 import Huffman.Types
-import Data.Char (ord, chr)
-import System.Environment (getArgs)
+import Data.Char
+import System.Environment
 
 main :: IO ()
 main = undefined
